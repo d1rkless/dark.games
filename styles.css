@@ -1,0 +1,64 @@
+body {
+    background-color: #1e3a8a; /* blue */
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #111827;
+}
+
+#menuBtn {
+    margin-left: auto;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Main dropdown menu animation */
+.menu {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: #1f2937;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+}
+
+.menu.show {
+    max-height: 500px;
+}
+
+.menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.menu li:hover {
+    background-color: #374151;
+}
+
+/* Submenu slides left */
+.submenu {
+    background-color: #111827;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.4s ease;
+    white-space: nowrap;
+}
+
+.menu li:hover > .submenu {
+    max-width: 200px;
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dark.games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>dark.games</h1>
+    <button id="menuBtn">☰</button>
+    <ul id="menu" class="menu">
+        <li>
+            Backgrounds
+            <ul class="submenu">
+                <li>
+                    <button id="uploadBtn">Upload Image</button>
+                    <input type="file" id="bgUpload" accept="image/*" style="display:none;">
+                </li>
+                <li><button id="resetBtn">Choose Default</button></li>
+            </ul>
+        </li>
+        <li>Settings</li>
+        <li>About</li>
+    </ul>
+</header>
+
+<main>
+    <p>Welcome to dark.games! Add your games below.</p>
+</main>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const menu = document.getElementById('menu');
+menuBtn.addEventListener('click', () => {
+    menu.classList.toggle('show');
+});
+
+const uploadBtn = document.getElementById('uploadBtn');
+const bgUpload = document.getElementById('bgUpload');
+const resetBtn = document.getElementById('resetBtn');
+
+// open file picker
+uploadBtn.addEventListener('click', () => {
+    bgUpload.click();
+});
+
+// set new background
+bgUpload.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.body.style.backgroundImage = `url(${e.target.result})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        localStorage.setItem('bgImage', e.target.result);
+    };
+    reader.readAsDataURL(file);
+});
+
+// reset to default blue background
+resetBtn.addEventListener('click', () => {
+    document.body.style.backgroundImage = '';
+    document.body.style.backgroundColor = '#3498db';
+    localStorage.removeItem('bgImage');
+});
+
+// load saved background
+window.addEventListener('load', () => {
+    const savedBg = localStorage.getItem('bgImage');
+    if (savedBg) {
+        document.body.style.backgroundImage = `url(${savedBg})`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundRepeat = 'no-repeat';
+    } else {
+        document.body.style.backgroundColor = '#3498db';
+    }
+});
+</script>
+</body>
+</html>
