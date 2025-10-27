@@ -4,6 +4,87 @@
     <meta charset="UTF-8">
     <title>dark.games</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #808080; /* Default gray background */
+            margin: 0;
+            font-family: sans-serif;
+            color: white;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px 20px;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        #menuBtn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        ul.menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        ul.menu.show {
+            display: block;
+        }
+
+        ul.menu > li {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        ul.menu > li:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ul.submenu {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        ul.submenu li {
+            padding: 5px 0;
+        }
+
+        button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #666;
+        }
+
+        main {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -61,10 +142,10 @@ bgUpload.addEventListener('change', (event) => {
     reader.readAsDataURL(file);
 });
 
-// reset to default blue background
+// reset to default gray background
 resetBtn.addEventListener('click', () => {
     document.body.style.backgroundImage = '';
-    document.body.style.backgroundColor = '#3498db';
+    document.body.style.backgroundColor = '#808080';
     localStorage.removeItem('bgImage');
 });
 
@@ -77,9 +158,10 @@ window.addEventListener('load', () => {
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundRepeat = 'no-repeat';
     } else {
-        document.body.style.backgroundColor = '#3498db';
+        document.body.style.backgroundColor = '#808080';
     }
 });
 </script>
 </body>
 </html>
+
