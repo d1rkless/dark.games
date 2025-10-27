@@ -4,77 +4,85 @@
   <meta charset="UTF-8">
   <title>dark.games</title>
   <style>
+    /* ===== Base Styles ===== */
     body {
-      background-color: #808080; /* gray */
+      background-color: #808080; /* default gray */
       color: white;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
 
     header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 10px 20px;
       background-color: #111827;
+      position: relative;
+      z-index: 10;
     }
 
     h1 {
       margin: 0;
+      font-size: 1.5em;
     }
 
-    #menuBtn {
-      margin-left: auto;
+    #menuBtn, #closeGameBtn {
       font-size: 24px;
       background: none;
       border: none;
       color: white;
       cursor: pointer;
+      transition: 0.3s;
     }
 
-    /* Dropdown Menu */
+    #menuBtn:hover, #closeGameBtn:hover {
+      color: #00bfff;
+      transform: scale(1.1);
+    }
+
+    #closeGameBtn {
+      display: none; /* hidden until a game opens */
+      margin-right: 10px;
+    }
+
+    /* ===== Menu ===== */
     .menu {
       position: absolute;
       top: 60px;
-      right: 20px;
+      right: 10px;
       background-color: #1f2937;
       list-style: none;
       margin: 0;
       padding: 0;
       border-radius: 8px;
       overflow: hidden;
-      display: none;
-      width: 200px;
+      max-height: 0;
+      transition: max-height 0.4s ease;
+      z-index: 5;
     }
 
     .menu.show {
-      display: block;
+      max-height: 500px;
     }
 
-    .menu > li {
-      border-bottom: 1px solid #333;
-    }
-
-    .menu button.menu-toggle {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      color: white;
-      padding: 10px 15px;
-      font-size: 16px;
+    .menu li {
+      padding: 10px 20px;
       cursor: pointer;
+      user-select: none;
     }
 
-    .menu button.menu-toggle:hover {
+    .menu li:hover {
       background-color: #374151;
     }
 
-    /* Submenu (slides down) */
+    /* ===== Submenus ===== */
     .submenu {
+      background-color: #111827;
       max-height: 0;
       overflow: hidden;
-      background-color: #111827;
       transition: max-height 0.3s ease;
     }
 
@@ -83,103 +91,125 @@
     }
 
     .submenu li {
-      padding: 8px 15px;
-    }
-
-    .submenu li button {
-      background-color: #555;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .submenu li button:hover {
-      background-color: #666;
+      padding-left: 30px;
     }
 
     main {
-      padding: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    /* ===== Game Overlay ===== */
+    #gameOverlay {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      transition: bottom 0.7s ease;
+      z-index: 9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #gameOverlay.show {
+      bottom: 0;
+    }
+
+    iframe {
+      width: 90%;
+      height: 80%;
+      border: none;
+      border-radius: 12px;
+    }
+
+    button {
+      background: none;
+      border: 1px solid #444;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #333;
     }
   </style>
 </head>
 <body>
   <header>
+    <button id="closeGameBtn">❌</button>
     <h1>dark.games</h1>
     <button id="menuBtn">☰</button>
+
     <ul id="menu" class="menu">
-      <li>
-        <button class="menu-toggle" data-target="bgSubmenu">Backgrounds ▾</button>
-        <ul id="bgSubmenu" class="submenu">
+      <li id="bgToggle">Backgrounds ▾
+        <ul class="submenu" id="bgSubmenu">
           <li>
             <button id="uploadBtn">Upload Image</button>
             <input type="file" id="bgUpload" accept="image/*" style="display:none;">
           </li>
-          <li><button id="resetBtn">Choose Default</button></li>
+          <li><button id="resetBtn">Reset to Default</button></li>
         </ul>
       </li>
-
-      <li>
-        <button class="menu-toggle" data-target="settingsSubmenu">Settings ▾</button>
-        <ul id="settingsSubmenu" class="submenu">
-          <li><button>Volume</button></li>
-          <li><button>Theme</button></li>
-          <li><button>Controls</button></li>
+      <li id="settingsToggle">Settings ▾
+        <ul class="submenu" id="settingsSubmenu">
+          <li>Dark Mode (coming soon)</li>
+          <li>Sound: On/Off (coming soon)</li>
         </ul>
       </li>
-
-      <li>
-        <button class="menu-toggle" data-target="aboutSubmenu">About ▾</button>
-        <ul id="aboutSubmenu" class="submenu">
-          <li>
-            <p style="margin:0; padding:5px 10px; font-size:14px;">
-              dark.games is your hub for custom browser games.
-            </p>
-          </li>
+      <li id="aboutToggle">About ▾
+        <ul class="submenu" id="aboutSubmenu">
+          <li>Made by You 😎</li>
+          <li>Version 1.0</li>
         </ul>
       </li>
+      <li id="slopeGameBtn">🎮 Play Slope Rider</li>
     </ul>
   </header>
 
   <main>
-    <p>Welcome to dark.games! Add your games below.</p>
+    <p>Welcome to <strong>dark.games</strong>! Choose a game from the menu to play.</p>
   </main>
 
+  <!-- Game Overlay Panel -->
+  <div id="gameOverlay">
+    <iframe src="https://sloperider.org/"></iframe>
+  </div>
+
   <script>
+    /* ===== Menu & Submenus ===== */
     const menuBtn = document.getElementById('menuBtn');
     const menu = document.getElementById('menu');
+    const bgToggle = document.getElementById('bgToggle');
+    const bgSubmenu = document.getElementById('bgSubmenu');
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsSubmenu = document.getElementById('settingsSubmenu');
+    const aboutToggle = document.getElementById('aboutToggle');
+    const aboutSubmenu = document.getElementById('aboutSubmenu');
+
+    menuBtn.addEventListener('click', () => menu.classList.toggle('show'));
+    bgToggle.addEventListener('click', () => bgSubmenu.classList.toggle('show'));
+    settingsToggle.addEventListener('click', () => settingsSubmenu.classList.toggle('show'));
+    aboutToggle.addEventListener('click', () => aboutSubmenu.classList.toggle('show'));
+
+    /* ===== Background Upload ===== */
     const uploadBtn = document.getElementById('uploadBtn');
     const bgUpload = document.getElementById('bgUpload');
     const resetBtn = document.getElementById('resetBtn');
 
-    // Toggle entire dropdown menu
-    menuBtn.addEventListener('click', () => {
-      menu.classList.toggle('show');
-    });
-
-    // Handle submenu toggles (only one open at a time)
-    document.querySelectorAll('.menu-toggle').forEach(button => {
-      button.addEventListener('click', () => {
-        const targetId = button.getAttribute('data-target');
-        const submenu = document.getElementById(targetId);
-        const isOpen = submenu.classList.contains('show');
-
-        // Close all submenus
-        document.querySelectorAll('.submenu').forEach(sm => sm.classList.remove('show'));
-
-        // If the clicked one was closed, open it
-        if (!isOpen) submenu.classList.add('show');
-      });
-    });
-
-    // Upload background
     uploadBtn.addEventListener('click', () => bgUpload.click());
+
     bgUpload.addEventListener('change', (event) => {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = e => {
         document.body.style.backgroundImage = `url(${e.target.result})`;
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundPosition = 'center';
@@ -189,14 +219,12 @@
       reader.readAsDataURL(file);
     });
 
-    // Reset to default gray
     resetBtn.addEventListener('click', () => {
       document.body.style.backgroundImage = '';
       document.body.style.backgroundColor = '#808080';
       localStorage.removeItem('bgImage');
     });
 
-    // Load saved background
     window.addEventListener('load', () => {
       const savedBg = localStorage.getItem('bgImage');
       if (savedBg) {
@@ -207,6 +235,22 @@
       } else {
         document.body.style.backgroundColor = '#808080';
       }
+    });
+
+    /* ===== Game Overlay ===== */
+    const slopeGameBtn = document.getElementById('slopeGameBtn');
+    const gameOverlay = document.getElementById('gameOverlay');
+    const closeGameBtn = document.getElementById('closeGameBtn');
+
+    slopeGameBtn.addEventListener('click', () => {
+      gameOverlay.classList.add('show');
+      closeGameBtn.style.display = 'inline';
+      menu.classList.remove('show');
+    });
+
+    closeGameBtn.addEventListener('click', () => {
+      gameOverlay.classList.remove('show');
+      closeGameBtn.style.display = 'none';
     });
   </script>
 </body>
