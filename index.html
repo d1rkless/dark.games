@@ -96,7 +96,7 @@
       text-align: center;
     }
 
-    /* ===== Game card on homepage ===== */
+    /* ===== Game Card ===== */
     .game-card {
       display: inline-block;
       text-align: center;
@@ -106,13 +106,16 @@
     }
 
     .game-card img {
-      width: 180px;
+      width: 220px;
+      max-width: 80vw;
       border-radius: 12px;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
     }
 
     .game-card:hover img {
       transform: scale(1.05);
+      box-shadow: 0 0 20px #00bfff;
     }
 
     .game-card span {
@@ -120,7 +123,7 @@
       margin-top: 10px;
       text-decoration: underline;
       color: white;
-      font-size: 18px;
+      font-size: 20px;
       transition: color 0.3s ease;
     }
 
@@ -128,6 +131,7 @@
       color: #00bfff;
     }
 
+    /* ===== Game Overlay ===== */
     #gameOverlay {
       position: fixed;
       bottom: -100%;
@@ -203,7 +207,7 @@
   <main>
     <p>Welcome to <strong>dark.games</strong>! Click a game below to play.</p>
 
-    <!-- Slope Rider card -->
+    <!-- Slope Rider Card -->
     <div class="game-card" id="slopeGameCard">
       <img src="236002647.png" alt="Slope Rider">
       <span>Slope Rider</span>
@@ -215,6 +219,7 @@
   </div>
 
   <script>
+    /* ===== Menu Functionality ===== */
     const menuBtn = document.getElementById('menuBtn');
     const menu = document.getElementById('menu');
     const bgToggle = document.getElementById('bgToggle');
@@ -229,6 +234,7 @@
     settingsToggle.addEventListener('click', () => settingsSubmenu.classList.toggle('show'));
     aboutToggle.addEventListener('click', () => aboutSubmenu.classList.toggle('show'));
 
+    /* ===== Background Upload ===== */
     const uploadBtn = document.getElementById('uploadBtn');
     const bgUpload = document.getElementById('bgUpload');
     const resetBtn = document.getElementById('resetBtn');
@@ -267,6 +273,7 @@
       }
     });
 
+    /* ===== Game Overlay ===== */
     const slopeGameCard = document.getElementById('slopeGameCard');
     const gameOverlay = document.getElementById('gameOverlay');
     const closeGameBtn = document.getElementById('closeGameBtn');
