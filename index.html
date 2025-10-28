@@ -131,15 +131,15 @@
       color: #00bfff;
     }
 
-    /* ===== Game Overlay ===== */
+    /* ===== Slide-Up Game Overlay ===== */
     #gameOverlay {
       position: fixed;
-      bottom: -100%;
       left: 0;
-      width: 100%;
-      height: 100%;
+      right: 0;
+      bottom: -100%;
+      top: auto;
       background-color: rgba(0, 0, 0, 0.95);
-      transition: bottom 0.7s ease;
+      transition: bottom 0.6s ease-in-out;
       z-index: 9;
       display: flex;
       flex-direction: column;
@@ -156,6 +156,13 @@
       height: 80%;
       border: none;
       border-radius: 12px;
+      background: #000;
+    }
+
+    .overlay-fallback {
+      color: #ccc;
+      font-size: 18px;
+      text-align: center;
     }
 
     button {
@@ -209,13 +216,17 @@
 
     <!-- Slope Rider Card -->
     <div class="game-card" id="slopeGameCard">
-   <img src="slope%20rider/236002647.png" alt="Slope Rider">
+      <img src="slope%20rider/236002647.png" alt="Slope Rider">
       <span>Slope Rider</span>
     </div>
   </main>
 
+  <!-- Smooth slide-up overlay -->
   <div id="gameOverlay">
-    <iframe src="https://sloperider.org/"></iframe>
+    <iframe id="gameIframe" src=""></iframe>
+    <div id="fallbackMsg" class="overlay-fallback" style="display:none;">
+      This game can’t be embedded — <a href="https://sloperider.org/" target="_blank" style="color:#00bfff;">open in new tab</a>.
+    </div>
   </div>
 
   <script>
@@ -276,16 +287,31 @@
     /* ===== Game Overlay ===== */
     const slopeGameCard = document.getElementById('slopeGameCard');
     const gameOverlay = document.getElementById('gameOverlay');
+    const gameIframe = document.getElementById('gameIframe');
+    const fallbackMsg = document.getElementById('fallbackMsg');
     const closeGameBtn = document.getElementById('closeGameBtn');
 
     slopeGameCard.addEventListener('click', () => {
+      gameIframe.src = "https://sloperider.org/";
       gameOverlay.classList.add('show');
       closeGameBtn.style.display = 'inline';
+      fallbackMsg.style.display = 'none';
+
+      setTimeout(() => {
+        try {
+          if (!gameIframe.contentDocument || gameIframe.contentDocument.body.innerHTML.trim() === "") {
+            fallbackMsg.style.display = 'block';
+          }
+        } catch (err) {
+          fallbackMsg.style.display = 'block';
+        }
+      }, 1200);
     });
 
     closeGameBtn.addEventListener('click', () => {
       gameOverlay.classList.remove('show');
       closeGameBtn.style.display = 'none';
+      gameIframe.src = "about:blank"; // stop the game when closed
     });
   </script>
 </body>
