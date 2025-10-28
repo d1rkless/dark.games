@@ -284,35 +284,26 @@
       }
     });
 
-    /* ===== Game Overlay ===== */
-    const slopeGameCard = document.getElementById('slopeGameCard');
-    const gameOverlay = document.getElementById('gameOverlay');
-    const gameIframe = document.getElementById('gameIframe');
-    const fallbackMsg = document.getElementById('fallbackMsg');
-    const closeGameBtn = document.getElementById('closeGameBtn');
+/* ===== Game Overlay ===== */
+const slopeGameCard = document.getElementById('slopeGameCard');
+const gameOverlay = document.getElementById('gameOverlay');
+const gameIframe = document.getElementById('gameIframe');
+const closeGameBtn = document.getElementById('closeGameBtn');
 
-    slopeGameCard.addEventListener('click', () => {
-      gameIframe.src = "https://sloperider.org/";
-      gameOverlay.classList.add('show');
-      closeGameBtn.style.display = 'inline';
-      fallbackMsg.style.display = 'none';
+slopeGameCard.addEventListener('click', () => {
+  // Load and show the game
+  gameIframe.src = "https://sloperider.org/";
+  gameOverlay.classList.add('show');
+  closeGameBtn.style.display = 'inline';
+});
 
-      setTimeout(() => {
-        try {
-          if (!gameIframe.contentDocument || gameIframe.contentDocument.body.innerHTML.trim() === "") {
-            fallbackMsg.style.display = 'block';
-          }
-        } catch (err) {
-          fallbackMsg.style.display = 'block';
-        }
-      }, 1200);
-    });
+closeGameBtn.addEventListener('click', () => {
+  // Hide and stop the game
+  gameOverlay.classList.remove('show');
+  closeGameBtn.style.display = 'none';
+  gameIframe.src = "about:blank";
+});
 
-    closeGameBtn.addEventListener('click', () => {
-      gameOverlay.classList.remove('show');
-      closeGameBtn.style.display = 'none';
-      gameIframe.src = "about:blank"; // stop the game when closed
-    });
   </script>
 </body>
 </html>
