@@ -47,14 +47,18 @@
       margin-right: 10px;
     }
 
+    /* ===== Remove dots ===== */
+    .menu, .submenu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
     .menu {
       position: absolute;
       top: 60px;
       right: 10px;
       background-color: #1f2937;
-      list-style: none;
-      margin: 0;
-      padding: 0;
       border-radius: 8px;
       overflow: hidden;
       max-height: 0;
@@ -247,7 +251,7 @@
 
     <!-- Slope Rider Card -->
     <div class="game-card" id="slopeGameCard">
-<img src="slope-rider/236002647.png">
+      <img src="https://raw.githubusercontent.com/d1rkless/dark.games/main/images.jpeg" alt="Slope Rider">
       <span>Slope Rider</span>
     </div>
   </main>
@@ -336,7 +340,7 @@
       setTimeout(() => {
         loadingScreen.classList.add('hidden');
         gameIframe.style.display = 'block';
-      }, 600); // short delay for smooth fade
+      }, 600);
     });
 
     closeGameBtn.addEventListener('click', () => {
@@ -349,4 +353,3 @@
   </script>
 </body>
 </html>
-
